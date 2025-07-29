@@ -1,0 +1,202 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9; /* Arka plan rengi */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Arka plan resmi ekleniyor */
+    background-image: url('../images/background.jpg'); /* Arka plan resminin yolu */
+    background-size: cover; /* Resmi tam ekrana yayar ve ölçeklendirir */
+    background-position: center center; /* Resmin ortalanmasını sağlar */
+    background-repeat: no-repeat; /* Resmin tekrar etmesini engeller */
+}
+
+/* Diğer stiller aynı kalıyor */
+.upload-container {
+    background-color: #fff; /* Beyaz arka plan */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+    text-align: center;
+    position: relative;
+}
+
+.upload-container h1 {
+    color: #333; /* Başlık rengi */
+    margin-bottom: 20px;
+}
+
+.upload-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-container input[type="file"] {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+/* Select, input[list] ve Invoice Number alanı için aynı stili uygula */
+.upload-container select,
+.upload-container input[list],
+.upload-container input[type="text"] {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 100%; /* Tam genişlikte */
+    max-width: 400px; /* Genişliği sınırlamak için */
+}
+
+.upload-container button {
+    background-color: #7e0016;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.upload-container button:hover {
+    background-color: #7e0016;
+}
+
+/* Logo Stil - CSS ile eklenen logo */
+.upload-container::before {
+    content: '';
+    display: block;
+    width: 200px;
+    height: 50px;
+    /* Logo'nun yolu */
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto 20px auto; /* Ortalanmış ve altta boşluk bırakılmış */
+}
+
+/* Arama kutusu için genişlik ayarlaması */
+.upload-container datalist {
+    width: 100%;
+    max-width: 400px; /* Maksimum genişlik */
+
+
+}
+
+.avatar-container {
+    position: fixed; /* Ekranın sağ üst köşesine sabitler */
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.avatar-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.info-popup {
+    display: none;
+    position: absolute;
+    top: 60px; /* Avatar'ın hemen üstünde */
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+}
+
+.avatar-container:hover .info-popup {
+    display: block;
+}
+
+.info-popup p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.info-popup button {
+    padding: 5px 10px;
+    margin-top: 10px;
+    background-color: #7e0016; /* Kırmızı renk */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.info-popup button:hover {
+    background-color: #7e0016; /* Koyu kırmızı ton */
+}
+/* İki kutuyu yan yana getirmek için container ayarı */
+.upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px; /* Kutular arası boşluk */
+    padding: 60px 20px;
+    background-color: transparent; /* Arka plan zaten body'de */
+    box-shadow: none; /* Orta kutunun gölgesini kaldırdık çünkü ikiye böldük */
+}
+
+/* Sol kutu: form alanı */
+.form-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 320px;
+}
+
+/* Sağ kutu: buton alanı */
+.side-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Sağ kutudaki butonlar */
+.side-box button {
+    margin-bottom: 20px;
+    padding: 12px;
+    background-color: #7e0016;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.side-box button:hover {
+    background-color: #a8001f;
+}
+
+/* === Logo üst ortada === */
+.logo-inside-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo-inside-form img {
+    width: 140px;
+    height: auto;
+}

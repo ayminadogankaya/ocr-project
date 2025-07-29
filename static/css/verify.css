@@ -1,0 +1,125 @@
+/* Genel Ayarlar */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Logo düzeni */
+.page-logo {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.centered-logo {
+    width: 400px;
+    height: auto;
+}
+
+/* Bilgi kutusu düzeni */
+.info-container-box {
+    width: 60%;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* Etiket ve veriler için düzen */
+p {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+p span {
+    font-weight: bold;
+    color: #7e0016;
+}
+
+/* Date ve Freight alanı düzenlemesi */
+input[type="date"], input[type="text"] {
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="date"] {
+    display: block;
+    margin-bottom: 5px;
+}
+
+label[for="freight_value"] {
+    font-weight: bold;
+    margin-top: 20px;
+    display: block;
+}
+
+/* Hata mesajı */
+span {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Tablo düzeni */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #7e0016;
+    color: white;
+    text-transform: uppercase;
+    border-bottom: 1px solid #ddd;
+}
+
+td {
+    background-color: #f9f9f9;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Satırların fareyle üzerine gelindiğinde vurgulanması */
+tr:hover td {
+    background-color: #f1f1f1;
+}
+
+/* Buton düzeni */
+button {
+    padding: 10px 15px;
+    font-size: 1em;
+    background-color: #7e0016;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #b3001b;
+    transition: 0.3s;
+}
+
+/* Mobil uyumluluk */
+@media (max-width: 768px) {
+    .info-container-box {
+        width: 90%;
+    }
+}

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Records</title>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables Buttons Extension -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; background-image: url('static/images/back.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <div style="background-color: rgba(255, 255, 255, 0.85); padding: 20px; margin: 30px auto; border-radius: 8px; max-width: 95%; min-height: 90vh; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: flex; flex-direction: column;">
+    <h2 style="font-family: 'Segoe UI Semibold', sans-serif; font-size: 20px; color: #333;">
+
+    <!-- Back to Home Button -->
+    <button onclick="window.location.href='/'" style="font-family: 'Segoe UI', sans-serif; font-size: 13px; margin-top: 10px; margin-bottom: 20px; padding: 5px 10px; background-color: #7e0016; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        ⬅ Back to Upload Page
+    </button>
+
+    <!-- Marka Seçimi -->
+    <label for="brand_filter">Select Brand:</label>
+    <input type="text" id="brand_filter" list="brand_list" placeholder="Search for a brand" style="margin-right: 10px;">
+    <datalist id="brand_list">
+        <!-- options will be populated by JS -->
+    </datalist>
+
+    <!-- Tarih filtresi -->
+    <label for="date_picker">Select Date:</label>
+    <input type="date" id="date_picker" style="margin-left: 10px;" />
+
+    <br><br>
+    <!-- Veri Tablosu -->
+    <table id="data_table" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Brand Name</th>
+                <th>Invoice Number</th>
+                <th>Date</th>
+                <th>Quantity</th>
+                <th>Product Code</th>
+                <th>Description</th>
+                <th>Unit Price</th>
+                <th>Extended Amount</th>
+                <th>Currency</th>
+                <th>Grand Total</th>
+                <th>Freight</th>
+                <th>Exchange Rate</th>
+            </tr>
+        </thead>
+    </table>
+
+    <script>
+    // Marka listesini yükle
+    $.getJSON('/get_brands', function(data) {
+        const datalist = $('#brand_list');
+        datalist.empty();
+        if (Array.isArray(data)) {
+            data.forEach(function(brand) {
+                datalist.append(`<option value="${brand}">${brand}</option>`);
+            });
+        } else {
+            console.error('Unexpected brand data format:', data);
+        }
+    });
+
+    let dataTable;
+
+    function loadTable(brand, date = null) {
+        if (dataTable) {
+            dataTable.destroy();
+            $('#data_table').empty();
+            $('#data_table').append(`
+                <thead>
+                    <tr>
+                        <th>BrandName</th>
+                        <th>InvoiceNumber</th>
+                        <th>Date</th>
+                        <th>QTY</th>
+                        <th>Product_Code</th>
+                        <th>Description</th>
+                        <th>Unit_Price</th>
+                        <th>Extended_Amount</th>
+                        <th>Currency</th>
+                        <th>Grand_Total</th>
+                        <th>Freight</th>
+                        <th>Exchange_Rate</th>
+                    </tr>
+                </thead>
+            `);
+        }
+
+        let encodedBrand = encodeURIComponent(brand);
+        let url = `/get_data?brand=${encodedBrand}`;
+        if (date) {
+            url += `&date=${date}`;
+        }
+
+        dataTable = $('#data_table').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: 'Export to Excel',
+                    className: 'exportExcel',
+                    filename: 'Data_Records',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: 'Export to PDF',
+                    filename: 'Veri_Kayitlari',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: 'Export to CSV',
+                    filename: 'Veri_Kayitlari',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }
+            ],
+            ajax: url,
+            columns: [
+                { data: 'BrandName' },
+                { data: 'InvoiceNumber' },
+                { data: 'Date' },
+                { data: 'QTY' },
+                { data: 'Product_Code' },
+                { data: 'Description' },
+                { data: 'Unit_Price' },
+                { data: 'Extended_Amount' },
+                { data: 'Currency' },
+                { data: 'Grand_Total' },
+                { data: 'Freight' },
+                { data: 'Exchange_Rate' },
+            ]
+        });
+    }
+
+    $('#brand_filter').on('change', function() {
+        const selectedBrand = $(this).val();
+        const selectedDate = $('#date_picker').val();
+        if (selectedBrand) {
+            loadTable(selectedBrand, selectedDate);
+        }
+    });
+            
+
+    $('#date_picker').on('change', function() {
+        const selectedBrand = $('#brand_filter').val();
+        const selectedDate = $(this).val();
+        if (selectedBrand && selectedDate) {
+            loadTable(selectedBrand, selectedDate);
+        }
+    });
+</script>
+    </div>
+</body>
+</html>

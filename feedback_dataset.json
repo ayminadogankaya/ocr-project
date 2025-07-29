@@ -1,0 +1,4 @@
+{"inputs": ["QTY: 1", "Unit_Price: 50.00", "Description: Widget"], "labels": ["1", "50.00", "Widget"]}
+{"inputs": ["QTY: 2", "Unit_Price: 20.00", "Description: Cable"], "labels": ["2", "20.00", "Cable"]}
+{"inputs": ["QTY: 3", "Unit_Price: 15.00", "Description: Adapter"], "labels": ["3", "15.00", "Adapter"]}
+

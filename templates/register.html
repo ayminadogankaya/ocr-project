@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol</title>
+    <link rel="stylesheet" href="/static/css/register.css">
+    <script>
+        function validatePassword() {
+            var password = document.getElementById("password").value;
+            var errorMessage = "";
+
+            var regexUpperCase = /[A-Z]/;  // Büyük harf
+            var regexLowerCase = /[a-z]/;  // Küçük harf
+            var regexNumber = /[0-9]/;     // Sayısal değer
+            var regexSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;  // Özel karakterler
+            var minLength = 8; // Minimum 8 karakter
+
+            if (password.length < minLength) {
+                errorMessage += "Şifre en az 8 karakter uzunluğunda olmalıdır.<br>";
+            }
+            if (!regexUpperCase.test(password)) {
+                errorMessage += "Şifre en az bir büyük harf içermelidir.<br>";
+            }
+            if (!regexLowerCase.test(password)) {
+                errorMessage += "Şifre en az bir küçük harf içermelidir.<br>";
+            }
+            if (!regexNumber.test(password)) {
+                errorMessage += "Şifre en az bir sayısal karakter içermelidir.<br>";
+            }
+            if (!regexSpecialChar.test(password)) {
+                errorMessage += "Şifre en az bir özel karakter içermelidir.<br>";
+            }
+
+            // Eğer hata mesajı varsa ekrana göster
+            if (errorMessage !== "") {
+                document.getElementById("passwordError").innerHTML = errorMessage;
+                return false;
+            }
+
+            // Eğer şifre geçerliyse hata mesajını kaldır
+            document.getElementById("passwordError").innerHTML = "";
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="background">
+        <div class="register-container">
+            
+
+            <h1>Kayıt Ol</h1>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="flash-messages">
+                  {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="/register" onsubmit="return validatePassword()">
+                <div class="input-group">
+                    <input type="text" name="username" placeholder="User Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="E-mail" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <div id="passwordError" style="color: red; font-size: 0.9em;"></div> <!-- Hata mesajı -->
+                </div>
+                <button class="register-btn" type="submit">Sign In</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+/* Tüm yapıyı sıfırla */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Arka plan */
+.background {
+  background-image: url('/static/images/background.jpg'); /* Arka plan resminin yolu */
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Login kutusu */
+.login-container {
+  background-color: #e2dfd7; /* Gri renk (#e2dfd7) */
+  padding: 50px;
+  border-radius: 25px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Hafif gölge */
+  text-align: center;
+  width: 450px; /* Genişliği ayarladık */
+}
+
+/* Logo boyutu */
+.logo {
+  width: 250px;
+  margin-bottom: 20px;
+}
+
+/* Başlık */
+h1 {
+  color: #A31E2C; /* Kırmızı başlık */
+  margin-bottom: 20px;
+  font-size: 1.8em;
+}
+
+/* Input kutuları */
+.input-group {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1.1em;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Login butonu */
+.login-btn {
+  background-color: #A31E2C;
+  color: white;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #8F1B27; /* Hover rengi */
+}
+
+/* Parolamı unuttum */
+.password-reset {
+  margin-top: 10px;
+}
+
+.password-reset a {
+  color: #A31E2C;
+  font-size: 0.9em;
+  text-decoration: none;
+}
+
+.password-reset a:hover {
+  text-decoration: underline;
+}
+
+/* Kayıt ol butonu */
+.register-option {
+  margin-top: 15px;
+}
+
+.register-btn {
+  background-color: #a31e2c;
+  color: white;
+  padding: 12px;
+  width: 100%;
+  display: block;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.register-btn:hover {
+  background-color: #8F1B27;
+}
+
+/* Hata ve başarı mesajları */
+.flash-messages {
+  margin-bottom: 15px;
+}
+
+.alert {
+  padding: 12px;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.alert.danger {
+  background-color: #8F1B27; /* Hata mesajı rengi */
+}
+
+.alert.success {
+  background-color: #2ecc71; /* Başarı mesajı rengi */
+}
+

@@ -1,0 +1,29 @@
+<!doctype html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anahtar Kelimeleri Ekle</title>
+</head>
+<body>
+    <h1>Anahtar Kelimeleri Güncelle</h1>
+    <form method="POST" action="{{ url_for('add_keywords') }}">
+        <label for="qty">QTY Keywords:</label>
+        <input type="text" id="qty" name="qty" required>
+
+        <label for="product_code">Product Code Keywords:</label>
+        <input type="text" id="product_code" name="product_code" required>
+
+        <label for="description">Description Keywords:</label>
+        <input type="text" id="description" name="description" required>
+
+        <label for="unit_price">Unit Price Keywords:</label>
+        <input type="text" id="unit_price" name="unit_price" required>
+
+        <label for="extended_amount">Extended Amount Keywords:</label>
+        <input type="text" id="extended_amount" name="extended_amount" required>
+
+        <button type="submit">Anahtar Kelimeleri Kaydet</button>
+    </form>
+</body>
+</html>

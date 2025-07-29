@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload PDF</title>
+    <link rel="stylesheet" href="static/css/index.css"> 
+</head>
+<body>
+    
+    <div class="upload-container">
+        <!-- Sol kutu: PDF yükleme formu -->
+        <div class="form-box">
+              <div class="logo-inside-form">
+                <img src="{{ url_for('static', filename='images/Adsız tasarım.png') }}" alt="Logo">
+              </div>
+            <form action="/" method="post" enctype="multipart/form-data">
+                <input type="file" name="pdf_file" required>
+
+                <select name="currency" required>
+                    <option value="EUR">Euro (EUR)</option>
+                    <option value="USD">Dollar (USD)</option>
+                    <option value="GBP">Pound (GBP)</option>
+                    <option value="TRY">Turkish Lira (TRY)</option>
+                    <option value="RUB">Ruble (RUB)</option>
+                </select>
+
+                <input list="brands" name="brand" placeholder="Search for brands..." required>
+                <datalist id="brands">
+                    {% for brand in brands %}
+                        <option value="{{ brand }}">{{ brand }}</option>
+                    {% endfor %}
+                </datalist>
+
+                <input type="text" name="invoice_number" placeholder="Invoice Number" required>
+
+                <div class="avatar-container">
+                    <img src="static/images/avatar.png" alt="User Avatar" class="avatar-image">
+                    <div class="info-popup">
+                        <p><strong>Name:</strong> {{ session['username'] }}</p>
+                        <p><strong>Email:</strong> {{ session['email'] }}</p>
+                        <p><strong>Role:</strong> Admin</p>
+                        <button onclick="location.href='/logout'">Çıkış Yap</button>
+                    </div>
+                </div>
+
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+
+        <!-- Sağ kutu: View Records ve Dashboard -->
+        <div class="side-box">
+            <button type="button" onclick="window.location.href='/records'">View Records</button>
+            <button type="button" onclick="window.location.href='/dashboard'">Dashboard</button>
+        </div>
+    </div>
+</body>
+</html>

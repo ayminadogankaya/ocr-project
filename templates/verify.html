@@ -1,0 +1,510 @@
+<!doctype html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Data</title>
+    
+    <!-- Var olan CSS dosyasına bağlantı -->
+    <link rel="stylesheet" href="static/css/verify.css">
+
+    <!-- jQuery ve jQuery UI kütüphaneleri -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- CSS ile görselleştirme -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-logo {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .centered-logo {
+            width: 300px;
+            height: auto;
+        }
+
+        .avatar-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .avatar-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-popup {
+            display: none;
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .info-popup p {
+            margin: 0;
+            padding: 5px 0;
+            font-size: 0.9em;
+        }
+
+        .info-popup p strong {
+            color: #7e0016;
+        }
+
+        .info-container {
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            float: left;
+            margin-left: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="date"], 
+        input[type="text"],
+        select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #7e0016;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        td {
+            background-color: #f7f7f7;
+        }
+
+        .hidden-row {
+            display: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 1em;
+            background-color: #7e0016;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #7e0016;
+        }
+
+        .remove-row-btn {
+            background-color: #7e0016;
+        }
+
+        .restore-row-btn {
+            background-color: #4CAF50;
+        }
+
+        /* Sürükleme için cursor ayarı */
+        .sortable-handle {
+            cursor: move;
+        }
+
+            /* Responsive tasarım: Ekran boyutuna göre tasarımın uyum sağlaması */
+        @media (max-width: 1200px) {
+            .info-container {
+                width: 100%; /* Küçük ekranlarda bilgi kutusunun tam genişlikte olmasını sağladık */
+                float: none;
+                margin-left: 0;
+            }
+
+            th, td {
+                font-size: 0.9em; /* Daha küçük ekranlarda font boyutunu biraz küçülttük */
+         }
+        }
+
+        /* Mobil uyumluluk */
+        @media (max-width: 768px) {
+            .info-container {
+                width: 95%;
+                float: none;
+                margin-left: 0;
+            }
+
+            th, td {
+                font-size: 0.9em;
+            }
+
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Özel genişlik ve yükseklikler */
+        input.small-input, textarea.description-input {
+            box-sizing: border-box; /* Padding ve border genişliğe dahil edilsin */
+            width: 50px; /* Genişlik ayarı - daha küçük yapıyoruz */
+            height: 40px; /* Yükseklik ayarı - daha küçük yapıyoruz */
+            padding: 5px; /* Varsayılan padding */
+            border: 1px solid #ccc; /* Varsayılan border */
+            font-size: 1em; /* Yazı boyutunu koruyoruz */
+            resize: none; /* Kullanıcının boyutlandırmasını engelle */
+            text-align: left; /* Sayısal veriyi sağa hizalayalım */
+        }
+
+        textarea.description-input {
+            width: 100%; /* Description genişliği tam genişlik olacak */
+            height: 80px;
+            text-align: left; /* Description yüksekliği daha büyük olacak */
+        }
+
+        input.small-input {
+            width: 80px; /* Küçük inputlar için genişlik */
+            height: 40px; /* Küçük inputlar için yükseklik */
+            min-width: 50px; /* Minimum genişlik ayarlandı */
+            max-width: 80px; /* Maksimum genişlik ayarlandı */
+        }
+    </style>
+
+    <!-- Script fonksiyonları -->
+    <script>
+        $(document).ready(function() {
+            // Avatar tıklama olayı
+            $('.avatar-container').click(function() {
+                $('.info-popup').toggle();
+            });
+
+            // Tabloyu sürüklenebilir hale getirme
+            $("tbody").sortable({
+                handle: ".sortable-handle", // Sadece bu sınıf ile sürükleme yapılabilir
+                axis: "y", // Yalnızca dikey eksende sürükle
+                placeholder: "ui-state-highlight", // Sürüklerken gösterilecek boşluk
+                update: function(event, ui) {
+                    // Sürükleme sonrası herhangi bir güncelleme yapılabilir
+                    console.log("Satırların sırası değişti.");
+                }
+            });
+
+            $("tbody").disableSelection(); // Metin seçimini devre dışı bırak
+        });
+
+
+        $("#verify_button").click(function() {
+            console.log("✅ Verify butonuna basıldı!");
+    
+            let items = [];
+            $("tbody tr").each(function() {
+                let row = {
+                    Product_Code: $(this).find("[name^='Product_Code']").val(),
+                    Description: $(this).find("[name^='Description']").val(),
+                    QTY: $(this).find("[name^='QTY']").val(),
+                    Unit: $(this).find("[name^='Unit']").val(),
+                    Unit_Price: $(this).find("[name^='Unit_Price']").val(),
+                    Extended_Amount: $(this).find("[name^='Extended_Amount']").val()
+                };
+                items.push(row);
+            });
+    
+            let data = {
+                invoice_number: $("input[name='invoice_number']").val(),
+                currency: $("input[name='currency']").val(),
+                grand_total: $("#grand_total").text().replace(/[^0-9.-]+/g, ""),
+                freight: $("input[name='freight_value']").val(),
+                selected_brand: $("select[name='brand']").val(),
+                items: items
+            };
+    
+            console.log("📦 Gönderilecek veri:", data);
+    
+            $.ajax({
+                url: "/process_verification",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    console.log("🎯 Server Yanıtı:", response);
+                    alert(response.message);
+                },
+                error: function(xhr, status, error) {
+                    console.error("🔥 AJAX Hatası:", xhr, status, error);
+                    alert("Veriler kaydedilirken bir hata oluştu.");
+                }
+            });
+        });
+
+        // Yeni Satır Ekleme Fonksiyonu
+        let rowIndex = {{ parsed_data['QTY']|length }}; // Mevcut satır sayısını al
+
+        function addRow() {
+            rowIndex++;  // Yeni satır için indeks artırıyoruz
+
+            // Yeni satırın HTML yapısı
+        const newRow = `
+            <tr id="row_${rowIndex}">
+                <td><span class="sortable-handle">↕</span></td>
+                <td><input type="text" name="Product_Code_${rowIndex}" value=""></td>
+                <td><textarea name="Description_${rowIndex}" class="description-input"></textarea></td>
+                <td><input type="text" name="QTY_${rowIndex}" class="small-input" value=""></td>
+                <td>
+                    <select name="Unit_${rowIndex}" id="Unit_${rowIndex}" class="unit-select">
+                        <option value="ADET">ADET</option>
+                        <option value="MT">MT</option>
+                        <option value="CM">CM</option>
+                        <option value="GÜN">GÜN</option>
+                        <option value="M2">M2</option>
+                    </select>
+                </td>
+                <td><input type="text" name="Unit_Price_${rowIndex}" class="small-input" value=""></td>
+                <td><input type="text" name="Extended_Amount_${rowIndex}" class="small-input" value="" onchange="updateGrandTotal()"></td>
+                <td>
+                    <button type="button" class="remove-row-btn" onclick="removeRow(${rowIndex})">Sil</button>
+                    <button type="button" id="restore_btn_${rowIndex}" class="restore-row-btn" onclick="restoreRow(${rowIndex})" style="display: none;">Geri Al</button>
+                    <input type="hidden" name="delete_${rowIndex}" id="delete_${rowIndex}" value="0">
+                </td>
+            </tr>
+        `;
+
+
+            // Yeni satırı tabloya ekle
+            $('table tbody').append(newRow);
+        }
+    </script>
+</head>
+<body>
+    <!-- Avatar Bölümü -->
+    <div class="avatar-container">
+        <img src="static/images/avatar.png" alt="User Avatar" class="avatar-image">
+        <div class="info-popup">
+            <p><strong>Name:</strong> {{ session['username'] }}</p>
+            <p><strong>Email:</strong> {{ session['email'] }}</p>
+            <p><strong>Role:</strong> Admin</p> <!-- Role verisi isteğe bağlı -->
+            <button onclick="location.href='/logout'">Çıkış Yap</button>
+        </div>
+    </div>
+    
+
+    <!-- Logo Bölümü -->
+    <div class="page-logo">
+        
+    </div>
+
+    <!-- Bilgi kutusu -->
+    <div class="info-container">
+        <p><strong>Selected Currency:</strong> {{ currency }}</p>
+        <p><strong>Grand Total:</strong> <span id="grandTotal">{{ grand_total }}</span>
+            {% if grand_total_in_eur %}
+            ({{ grand_total_in_eur }} )
+            {% endif %}
+        </p> 
+        <input type="hidden" name="grand_total_value" id="grand_total_value" value="{{ grand_total }}">
+   
+
+        <p><strong>Selected Brand:</strong> {{ selected_brand }}</p>
+        <p><strong>Invoice Number:</strong> {{ invoice_number }}</p> <!-- Invoice Number eklendi -->
+
+        <!-- Date input for missing date -->
+    <form method="POST" action="{{ url_for('verify') }}">
+        <p>Date:
+            {% if extracted_data['Date']|length > 0 %}
+                {{ extracted_data['Date'][0] }}
+            {% else %}
+                <input type="date" name="manual_date" value="{{ manual_date or '' }}" required> <!-- Tarihi göster -->
+                <span style="color:#7e0016;">* Please provide a date.</span>
+            {% endif %}
+        </p>
+		
+        <!-- Freight input -->
+        <label for="freight_value">Freight (optional):</label>
+        <input type="text" name="freight_value" placeholder="Freight Value" value="{{ freight_value or '' }}">
+		
+    </div>
+
+    <!-- Form ve tablo -->
+    <form method="POST" action="{{ url_for('verify') }}">
+        <!-- Gizli alanlar -->
+         <input type="hidden" name="selected_brand" value="{{ selected_brand }}">
+        <input type="hidden" name="grand_total_value" value="{{ grand_total }}">
+        <input type="hidden" name="currency" value="{{ currency }}">
+        <input type="hidden" name="filename" value="{{ filename }}">
+        <input type="hidden" name="image_filenames" value="{{ image_filenames }}">
+        <input type="hidden" name="invoice_number" value="{{ invoice_number }}"> <!-- Invoice Number'ı gizli alan olarak ekledik -->
+
+        <!-- Tablo Verilerini Form Olarak Gönderme -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Code</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Unit Price</th>
+                    <th>Extended Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(parsed_data['QTY']|length) %}
+                    <tr id="row_{{i}}">
+                        <td><input type="text" name="Product_Code_{{i}}" value="{{ parsed_data['Product_Code'][i] }}"></td>
+                        
+                        <!-- Description alanı geniş ve yüksek olacak -->
+                        <td><textarea name="Description_{{i}}" class="description-input">{{ parsed_data['Description'][i] }}</textarea></td>
+                        
+                        <!-- Quantity için küçük kare input -->
+                        <td><input type="text" name="QTY_{{i}}" class="small-input" value="{{ parsed_data['QTY'][i] }}"></td>
+
+                        <input type="hidden" name="Date_{{i}}" value="{{ parsed_data['Date'][i] }}">
+
+                        
+                        <!-- Unit seçimi -->
+                        <td>
+                            <select name="Unit_{{i}}" class="unit-select">
+                                <option value="ADET">ADET</option>
+                                <option value="MT">MT</option>
+                                <option value="CM">CM</option>
+                                <option value="GÜN">GÜN</option>
+                                <option value="M2">M2</option>
+                            </select>
+                        </td>
+        
+                        <!-- Unit Price alanı için küçük kare input -->
+                        <td><input type="text" name="Unit_Price_{{i}}" class="small-input" value="{{ parsed_data['Unit_Price'][i] }}"></td>
+                        
+                        <!-- Extended Amount alanı için küçük kare input -->
+                        <td><input type="text" name="Extended_Amount_{{i}}" class="small-input" value="{{ parsed_data['Extended_Amount'][i] }}" onchange="updateGrandTotal()"></td>
+
+                        
+                        <td>
+                            <button type="button" class="remove-row-btn" onclick="removeRow({{i}})">Sil</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="margin-top: 20px;">
+            <button type="button" onclick="addRow()">Satır Ekle</button>
+
+        </div>
+
+        <div style="margin-top: 20px;">
+            <button type="submit" name="verify_button">Verify</button>
+            <button type="button" onclick="updateGrandTotal()">Güncelle</button>
+
+
+        </div>
+    </form>
+
+<script>
+function convertToNumber(str) {
+    if (!str) return 0.0;
+
+    // Sadece rakam, nokta ve virgül dışındaki karakterleri temizle
+    str = str.replace(/[^\d.,-]/g, '');
+
+    // Eğer hem nokta hem virgül varsa, büyük ihtimalle nokta binlik, virgül ondalıktır
+    if (str.includes('.') && str.includes(',')) {
+        str = str.replace(/\./g, '').replace(',', '.');
+    } else if (str.includes(',')) {
+        str = str.replace(',', '.');
+    }
+
+    const num = parseFloat(str);
+    return isNaN(num) ? 0.0 : num;
+}
+
+
+function updateGrandTotal() {
+    let total = 0.0;
+
+    // Tüm Extended Amount inputlarını tara
+    document.querySelectorAll('input[name^="Extended_Amount_"]').forEach(input => {
+        total += convertToNumber(input.value.trim());
+    });
+
+    // Freight varsa ekle
+    const freightInput = document.querySelector('input[name="freight_value"]');
+    if (freightInput) {
+        total += convertToNumber(freightInput.value.trim());
+    }
+
+    // Görsel olarak güncelle
+    const grandTotalSpan = document.getElementById("grandTotal");
+    if (grandTotalSpan) {
+        grandTotalSpan.innerText = total.toLocaleString("tr-TR", {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " {{ currency }}";
+    }
+
+    // Backend'e gidecek input'u güncelle
+    const hiddenInput = document.getElementById("grand_total_value");
+    if (hiddenInput) {
+        hiddenInput.value = total.toFixed(2) + " {{ currency }}";
+    }
+
+    console.log("🔄 Grand Total güncellendi:", total);
+}
+
+
+function removeRow(index) {
+    if (confirm("Bu satırı silmek istediğinizden emin misiniz?")) {
+        let rowElement = document.getElementById("row_" + index);
+        if (!rowElement) return;
+
+        // Tutarı al
+        let extendedInput = rowElement.querySelector("[name='Extended_Amount_" + index + "']");
+        let extendedAmount = extendedInput ? convertToNumber(extendedInput.value) : 0;
+
+        // Grand Total güncelle
+        const grandTotalSpan = document.getElementById("grandTotal");
+        const grandTotalValue = convertToNumber(grandTotalSpan.innerText);
+        const newTotal = Math.max(0, grandTotalValue - extendedAmount);
+        grandTotalSpan.innerText = newTotal.toLocaleString("tr-TR", {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " {{ currency }}";
+
+        // Row'u kaldır
+        rowElement.remove();
+    }
+}
+
+
+</script>
+
+</body>
+</html>

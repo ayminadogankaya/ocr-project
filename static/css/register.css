@@ -1,0 +1,85 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .background {
+    background-image: url('/static/images/background.jpg'); /* Arka plan resminin yolu */
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  
+  .register-container {
+    background-color: #e2dfd7; /* Rengi #e2dfd7 olarak ayarladık */
+    padding: 50px;
+    border-radius: 25px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 450px;
+  }
+  
+  .logo {
+    width: 250px;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    color: #A31E2C;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .register-btn {
+    background-color: #A31E2C;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+  }
+  
+  .register-btn:hover {
+    background-color: #8F1B27;
+  }
+  
+  .flash-messages {
+    margin-bottom: 15px;
+  }
+  
+  .alert {
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .alert.danger {
+    background-color: #8F1B27; /* Kırmızı renk hatalar için */
+  }
+  
+  .alert.success {
+    background-color: #2ecc71; /* Başarı mesajları için */
+  }
+  

@@ -41,16 +41,12 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = 'kitoko_080621009'
+
 
 
 # MSSQL Veritabanı bağlantısı
 conn = pyodbc.connect(
-    'DRIVER={ODBC Driver 17 for SQL Server};'
-    'SERVER=DESKTOP-6OQRVBE\\SQLEXPRESS;'
-    'DATABASE=OCRPROJECT;'
-    'Trusted_Connection=yes;'
+
 )
 
 cursor = conn.cursor()
@@ -67,8 +63,8 @@ cursor.execute('''
 conn.commit()
 
 # Azure Form Recognizer Bilgileri
-FORM_RECOGNIZER_ENDPOINT =  "https://ocrprojeay.cognitiveservices.azure.com/"
-FORM_RECOGNIZER_KEY = "37b67f02ea1840d58a63ab6765f9a1ce"
+FORM_RECOGNIZER_ENDPOINT =  
+FORM_RECOGNIZER_KEY = 
 
 document_analysis_client = DocumentAnalysisClient(
     endpoint=FORM_RECOGNIZER_ENDPOINT,
